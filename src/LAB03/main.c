@@ -3,12 +3,15 @@
 
 // THIS FILE PERTAINS TOWARDS THE MAIN FUNCTIONALITY OF LAB 03
 
-// SYSTEM INCLUDES
+#define     EXERCISE_3_4
 
-#include <stdio.h>
+// NESTED INCLUDES
+
+#include "LAB03.h"
 
 int
 main(void)
 {
+    LAB_OUTPUT("HELLO, WORLD\n");
     return 0;
 }
