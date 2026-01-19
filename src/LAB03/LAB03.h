@@ -13,13 +13,16 @@
 
 #if defined(EXERCISE_3_1)
     #include <stdio.h>
+    #define     LAB_OUTPUT(VALUE)       print("%s", VALUE)
 
 #elif defined(EXERCISE_3_2)
     #include <unistd.h>
+    #define     LAB_OUTPUT(VALUE)       write(1, VALUE, strlen(VALUE))
 
 #elif defined(EXERCISE_3_3)
     #include <unistd.h>
     #include <sys/syscall.h>
+    #define     LAB_OUTPUT(VALUE)       syscall(SYS_write, 1, VALUE, strlen(VALUE))
 
 #endif
 #endif
