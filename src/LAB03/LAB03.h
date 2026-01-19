@@ -24,5 +24,28 @@
     #include <sys/syscall.h>
     #define     LAB_OUTPUT(VALUE)       syscall(SYS_write, 1, VALUE, strlen(VALUE))
 
+// DIRECTLY INTERFACE WITH CPU REGISTERS THAT EVOKE 
+// THE SYSCALLS DIRECTLY
+// 
+// WE CAN LEVERAGE ASM VOLATILE TO PREVENT GCC FROM
+// OPTIMISING THE CALLS ANY FURTHER
+
+#elif defined(EXERCISE_3_4)
+    #define     LAB_OUTPUT(VALUE)           \
+    do {                                    \
+        long LENGTH = strlen(VALUE);        \
+        __asm__ volatile                    \
+        (                                   \
+            "mov $1, %%rax\n"               \
+            "mov $1, %%rdi\n"               \
+            "mov $0, %%rsi\n"               \
+            "mov $1, %%rdx\n"               \
+            "syscall\n"                     \
+            :                               \
+            : "r"(VALUE), "r"(LENGTH)       \
+            : "rax", "rdi", "rsi", "rdx"    \
+        );                                  \
+    } while(0)
+
 #endif
 #endif
