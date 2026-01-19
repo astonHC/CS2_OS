@@ -8,7 +8,7 @@
 CC              := gcc
 IINC            := -I inc
 CSTD            := --std=c99
-CFLAGS          := -fPIC -fno-common
+CFLAGS          := -fPIC -fno-common -D_GNU_SOURCE
 WARNINGS        := -Wall -Wextra -Wpedantic -Wunused-value -Wunused-parameter -O3
 
 #####################################
