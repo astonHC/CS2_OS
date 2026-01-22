@@ -20,6 +20,9 @@ typedef size_t UNK;
 // DEFINE THE BASIS FOR HOW THE CIRCULAR BUFFER
 // IS PRESENTED - THROUGH IT'S RELATED FIELDS
 
+#define             BUFFER_SIZE        23
+#define             BUFFER_WRAP_INDEX(INDEX, SIZE)      ((INDEX) % (SIZE))
+
 typedef struct
 {
     int* DATA;
@@ -29,11 +32,33 @@ typedef struct
 
 } CIRCULAR_BUFFER;
 
-        #define         BUFFER_DATA         CB->DATA;
-        #define         BUFFER_CAP          CB->CAPACITY;
-        #define         BUFFER_WRITE        CB->WRITE;
-        #define         BUFFER_COUNT        CB->COUNT;
+        #define         BUFFER_DATA(BASE)         ((BASE)->DATA)
+        #define         BUFFER_CAP(BASE)          ((BASE)->CAPACITY)
+        #define         BUFFER_WRITE(BASE)        ((BASE)->WRITE)
+        #define         BUFFER_COUNT(BASE)        ((BASE)->COUNT)
 
-        extern CIRCULAR_BUFFER CB;
+        // DEFINE THE BASIS FOR CREATING THE BUFFER ITSELF
+        #define         BUFFER_INIT(BASE)                               \
+            do {                                                        \
+                (BASE)->DATA = (int*)malloc(BUFFER_SIZE * sizeof(int)); \
+                (BASE)->WRITE = 0;                                      \
+                (BASE)->COUNT = 0;                                      \
+                (BASE)->CAPACITY = BUFFER_SIZE;                         \
+            } while(0)
+
+        // DEFINE THE BASIS FOR HOW WE ARE ABLE TO WRTE
+        // A POINTER NOTATION TO A SINGULAR POSITION WITHIN
+        // THE BUFFER 
+        //
+        // ASSUME THE OFFSET OF THE TOTAL SIZE OF THE BUFFER
+        #define         BUFFER_WRITE_PTR(BUFFER, VALUE)                                             \
+            do {                                                                                    \
+                    int* INDEX = BUFFER_DATA(BUFFER) + BUFFER_WRITE(BUFFER);                          \
+                    *INDEX = (VALUE);                                                               \
+                                                                                                    \
+                    BUFFER_WRITE(BUFFER) = BUFFER_WRAP_INDEX(BUFFER_WRITE(BUFFER) + 1, BUFFER_SIZE);  \
+                                                                                                    \
+                    if(BUFFER_COUNT(BUFFER) < BUFFER_SIZE) BUFFER_COUNT(BUFFER)++;                      \
+            } while(0)
 
 #endif
