@@ -46,19 +46,35 @@ typedef struct
                 (BASE)->CAPACITY = BUFFER_SIZE;                         \
             } while(0)
 
+        #if defined(CBUFFER_USE_PTR)
         // DEFINE THE BASIS FOR HOW WE ARE ABLE TO WRTE
         // A POINTER NOTATION TO A SINGULAR POSITION WITHIN
         // THE BUFFER 
         //
         // ASSUME THE OFFSET OF THE TOTAL SIZE OF THE BUFFER
-        #define         BUFFER_WRITE_PTR(BUFFER, VALUE)                                             \
-            do {                                                                                    \
-                    int* INDEX = BUFFER_DATA(BUFFER) + BUFFER_WRITE(BUFFER);                          \
-                    *INDEX = (VALUE);                                                               \
-                                                                                                    \
-                    BUFFER_WRITE(BUFFER) = BUFFER_WRAP_INDEX(BUFFER_WRITE(BUFFER) + 1, BUFFER_SIZE);  \
-                                                                                                    \
+        #define         BUFFER_WRITE_PTR(BUFFER, VALUE)                                                 \
+            do {                                                                                        \
+                    int* INDEX = BUFFER_DATA(BUFFER) + BUFFER_WRITE(BUFFER);                            \
+                    *INDEX = (VALUE);                                                                   \
+                                                                                                        \
+                    BUFFER_WRITE(BUFFER) = BUFFER_WRAP_INDEX(BUFFER_WRITE(BUFFER) + 1, BUFFER_SIZE);    \
+                                                                                                        \
                     if(BUFFER_COUNT(BUFFER) < BUFFER_SIZE) BUFFER_COUNT(BUFFER)++;                      \
             } while(0)
+        #endif
+
+
+        #if defined(CBUFFER_USE_ARRAY)
+        // NOW DO THE SAME BUT FOR ARRAY INDEXXING
+        // THIS ALREADY SUPPOSES THAT THERE IS SOME SORT OF DATA WITHIN
+        // THE BUFFER - IT WILL JUST INDEX ACCORDINGLY BASED ON WHAT 
+        // DATA THERE IS TO WRITE
+        #define         BUFFER_WRITE_ARRAY(BUFFER, VALUE)                                                   \
+            do {                                                                                            \
+                        BUFFER_DATA(BUFFER)[BUFFER_WRITE(BUFFER)] = (VALUE);                                \
+                        BUFFER_WRITE(BUFFER) = BUFFER_WRAP_INDEX(BUFFER_WRITE(BUFFER) + 1, BUFFER_SIZE);    \
+                        if(BUFFER_COUNT(BUFFER) < BUFFER_SIZE) BUFFER_COUNT(BUFFER)++;                      \
+            } while(0)
+        #endif            
 
 #endif
