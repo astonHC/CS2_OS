@@ -6,6 +6,7 @@
 
 // NESTED INCLUDES  
 
+#define CBUFFER_USE_PTR
 #include "CBUFFER.h"
 
 int main(void)
