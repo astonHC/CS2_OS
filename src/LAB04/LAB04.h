@@ -1,0 +1,30 @@
+// COPYRIGHT (C) HARRY CLARK 2026
+// CS2_OS LAB AND TUTORIAL CONTENTS
+
+// THIS FILE PERTAINS TOWARDS THE MAIN FUNCTIONALITY OF LAB 03
+// FOCUSSING ON PROVIDING SOME SORT OF MODULARISATION OF FUNCTIONALITY
+
+#ifndef CS2_OS_LAB_04
+#define CS2_OS_LAB_04
+
+// SYSTEM INCLUDES
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#if defined(EXERCISE_4_1)
+
+    #include <fcntl.h>
+    #include <sys/sendfile.h>
+    #include <unistd.h>
+
+    // PRE-PROCESSORS FOR HANDLING DESCRIPTOR OPERATIONS
+    // LEVERAGE BASE SYSTEM CALL IMPLEMENTATIONS AS PER
+    // LAB REQUIREMENTS
+
+    #define     LAB_FILE_OPEN(FILENAME, FLAGS)      open(FILENAME, FLAGS)
+    #define     LAB_FILE_CLOSE(DESC)                close(DESC)
+
+    #endif
+
+#endif
