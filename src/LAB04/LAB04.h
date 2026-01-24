@@ -32,6 +32,24 @@
     #define     LAB_FILE_SEND(OUT, IN, OFFSET, COUNT)       \
             sendfile(OUT, IN, OFFSET, COUNT)
 
+    // DISPLAY THE CONTENTS OF THE SUPPOSED FILE
+    // PASSED THROUGH STDIN
+
+    #define     LAB_FILE_DISPLAY(FILENAME, BYTES)                       \
+        do                                                              \
+        {                                                               \
+            int DESCRIPTOR = LAB_FILE_OPEN(FILENAME, O_RDONLY);         \
+            if(DESCRIPTOR < 0)                                          \
+            {                                                           \
+                perror("ERROR OPENING FILE");                           \
+                break;                                                  \
+            }                                                           \
+                                                                        \
+            LAB_FILE_SEND(LAB_STDOUT, DESCRIPTOR, 0, BYTES);            \
+            LAB_FILE_CLOSE(DESCRIPTOR);                                 \
+                                                                        \
+        } while(0)
+
     #endif
 
 #endif
