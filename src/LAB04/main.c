@@ -10,5 +10,6 @@
 
 int main(void)
 {
+    LAB_FILE_DISPLAY("input.txt", 512);
     return 0;
 }
