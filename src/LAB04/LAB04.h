@@ -18,12 +18,19 @@
     #include <sys/sendfile.h>
     #include <unistd.h>
 
+    #define     LAB_STDIN               0
+    #define     LAB_STDOUT              1
+    #define     LAB_STDERR              2
+
     // PRE-PROCESSORS FOR HANDLING DESCRIPTOR OPERATIONS
     // LEVERAGE BASE SYSTEM CALL IMPLEMENTATIONS AS PER
     // LAB REQUIREMENTS
 
-    #define     LAB_FILE_OPEN(FILENAME, FLAGS)      open(FILENAME, FLAGS)
-    #define     LAB_FILE_CLOSE(DESC)                close(DESC)
+    #define     LAB_FILE_OPEN(FILENAME, FLAGS)              open(FILENAME, FLAGS)
+    #define     LAB_FILE_CLOSE(DESC)                        close(DESC)
+    
+    #define     LAB_FILE_SEND(OUT, IN, OFFSET, COUNT)       \
+            sendfile(OUT, IN, OFFSET, COUNT)
 
     #endif
 
