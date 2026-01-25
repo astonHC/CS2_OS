@@ -24,7 +24,7 @@
      ((SIZE) >= KB_TO_BYTES ? "KB" : "B")
 
 #if defined(EXERCISE_4_1)
-
+    #include <assert.h>
     #include <fcntl.h>
     #include <sys/sendfile.h>
     #include <sys/stat.h>
@@ -33,6 +33,8 @@
     #define     LAB_STDIN               0
     #define     LAB_STDOUT              1
     #define     LAB_STDERR              2
+
+    #define     LAB_MAX_BYTES           1024
 
     // PRE-PROCESSORS FOR HANDLING DESCRIPTOR OPERATIONS
     // LEVERAGE BASE SYSTEM CALL IMPLEMENTATIONS AS PER
@@ -44,6 +46,7 @@
     #define     LAB_FILE_SEND(OUT, IN, OFFSET, COUNT)       \
             sendfile(OUT, IN, OFFSET, COUNT)
 
+    #define     LAB_ASSERT()        assert(LAB_MAX_BYTES <= 512 && "BYTES CANNOT EXCEED 512");
 
     // ACCESS THE CURRENT FILE SIZE AND IT'S RESPECTIVE CONTENTS
     // BY THE ACCESS OF SYSTEM CALLS
@@ -66,7 +69,7 @@
     // DISPLAY THE CONTENTS OF THE SUPPOSED FILE
     // PASSED THROUGH STDIN
 
-    #define     LAB_FILE_DISPLAY(FILENAME, BYTES, SIZE)                       \
+    #define     LAB_FILE_DISPLAY(FILENAME, BYTES, SIZE)                 \
         do                                                              \
         {                                                               \
             int DESCRIPTOR = LAB_FILE_OPEN(FILENAME, O_RDONLY);         \
