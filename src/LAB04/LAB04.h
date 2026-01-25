@@ -12,10 +12,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// AS AN EXTRA SO TO SPEAK, I WANT TO BE ABLE TO ACCESS
+// THE CONCURRENT FILE SIZE AND THE SIZE OF THE CONTENTS
+// WITHIN THE FILE
+
+#define KB_TO_BYTES      1024
+#define FORMAT_SIZE(SIZE) \
+     ((SIZE) >= KB_TO_BYTES ? (SIZE)/KB_TO_BYTES : (SIZE))
+
+#define FORMAT_UNIT(SIZE) \
+     ((SIZE) >= KB_TO_BYTES ? "KB" : "B")
+
 #if defined(EXERCISE_4_1)
 
     #include <fcntl.h>
     #include <sys/sendfile.h>
+    #include <sys/stat.h>
     #include <unistd.h>
 
     #define     LAB_STDIN               0
@@ -32,10 +44,29 @@
     #define     LAB_FILE_SEND(OUT, IN, OFFSET, COUNT)       \
             sendfile(OUT, IN, OFFSET, COUNT)
 
+
+    // ACCESS THE CURRENT FILE SIZE AND IT'S RESPECTIVE CONTENTS
+    // BY THE ACCESS OF SYSTEM CALLS
+    #define     LAB_FILE_SIZE(DESC, SIZE)                   \
+        do                                                  \
+        {                                                   \
+            struct stat FILE_STATS;                         \
+            if(fstat(DESC, &FILE_STATS) == 0)               \
+            {                                               \
+                SIZE = FILE_STATS.st_size;                  \
+            }                                               \
+                                                            \
+            else                                            \
+            {                                               \
+                SIZE = -1;                                  \
+            }                                               \
+                                                            \
+        } while(0)
+
     // DISPLAY THE CONTENTS OF THE SUPPOSED FILE
     // PASSED THROUGH STDIN
 
-    #define     LAB_FILE_DISPLAY(FILENAME, BYTES)                       \
+    #define     LAB_FILE_DISPLAY(FILENAME, BYTES, SIZE)                       \
         do                                                              \
         {                                                               \
             int DESCRIPTOR = LAB_FILE_OPEN(FILENAME, O_RDONLY);         \
@@ -45,6 +76,7 @@
                 break;                                                  \
             }                                                           \
                                                                         \
+            LAB_FILE_SIZE(DESCRIPTOR, SIZE);                            \
             LAB_FILE_SEND(LAB_STDOUT, DESCRIPTOR, 0, BYTES);            \
             LAB_FILE_CLOSE(DESCRIPTOR);                                 \
                                                                         \
