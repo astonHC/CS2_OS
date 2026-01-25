@@ -8,8 +8,21 @@
 #define EXERCISE_4_1
 #include "LAB04.h"
 
+#define         FILENAME        "input.txt"
+
 int main(void)
 {
-    LAB_FILE_DISPLAY("input.txt", 512);
+    long FILE_SIZE = 0;
+
+    LAB_FILE_DISPLAY(FILENAME, 512, FILE_SIZE);
+
+    if(FILE_SIZE > 0)
+    {
+        printf("\nSUCCESSFULLY LOADED -> %s WITH SIZE: %ld%s\n",
+            FILENAME, 
+            FORMAT_SIZE(FILE_SIZE),
+            FORMAT_UNIT(FILE_SIZE));
+    }
+
     return 0;
 }
