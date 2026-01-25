@@ -14,7 +14,8 @@ int main(void)
 {
     long FILE_SIZE = 0;
 
-    LAB_FILE_DISPLAY(FILENAME, 512, FILE_SIZE);
+    LAB_ASSERT();
+    LAB_FILE_DISPLAY(FILENAME, LAB_MAX_BYTES, FILE_SIZE);
 
     if(FILE_SIZE > 0)
     {
